@@ -1,87 +1,69 @@
-let entry = document.querySelector('table');
-let resetButton = document.querySelector('button');
+let table = document.querySelector("table");
+let button = document.getElementById("btn");
+let contentArr = new Array(9);
+let message = document.getElementById("result");
+let currTurn = "X";
+let gameOver = false;
+message.innerText = `Player ${currTurn} Turn `;
+
 let count = 0;
-let entryElement = '';
-let arr1 = ["1","2","3","4","5","6","7","8","9"];
-let arr = new Array(9);
-let B = false;
-let endgame = true;
 
-document.getElementById('result').innerHTML= "Player 'O' turn";
-
-//console.log(arr);
-
-  entry.addEventListener('click',function(e){
-
-    let ap = e.target.id;
-    let alpha = parseInt(ap);
-
-  //  console.log(alpha);
-    if(count<9  &&  document.getElementById(ap).innerHTML== ''){
-
-      if(entryElement == 'O'  && endgame){
-
-        document.getElementById(ap).innerHTML = 'X';
-        count++;
-        entryElement = 'X';
-        arr[alpha-1] = 'X';
-        document.getElementById('result').innerHTML= "Player 'O' turn";
-
-      }else{
-        if(endgame){
-        document.getElementById(ap).innerHTML = 'O';
-        count++;
-        entryElement = 'O';
-        arr[alpha-1] = 'O';
-        document.getElementById('result').innerHTML= "Player 'X' turn";
-        }
-
+table.addEventListener("click", function (e) {
+  let squareBoxID = parseInt(e.target.id);
+  let currClick = document.getElementById(squareBoxID);
+  if (!gameOver && squareBoxID >= 1 && squareBoxID <= 9 )
+    if (count < 9 && currClick.innerText == "") {
+      if (currTurn == "X") {
+        currClick.innerText = "X";
+        currTurn = "O";
+        contentArr[squareBoxID - 1] = "X";
+      } else {
+        currClick.innerText = "O";
+        currTurn = "X";
+        contentArr[squareBoxID - 1] = "O";
       }
-//console.log(count);
+      count++;
+      message.innerText = `Player ${currTurn} Turn `;
     }
 
-    if(count >= 4){
-
-      if((arr[0]=='X' && arr[1]=='X' && arr[2] =='X') || (arr[3]=='X' && arr[4]=='X' && arr[5] =='X') || (arr[6]=='X' && arr[7]=='X' && arr[8] =='X') ||(arr[0]=='X' && arr[4]=='X' && arr[8] =='X') || (arr[2]=='X' && arr[4]=='X' && arr[6] =='X') ||(arr[0]=='X' && arr[3]=='X' && arr[6] =='X')||(arr[4]=='X' && arr[1]=='X' && arr[7] =='X')||(arr[8]=='X' && arr[5]=='X' && arr[2] =='X')){
-        
-        document.getElementById('result').innerHTML= "Player 'X' won";
-        B = true;
-        endgame = false;
-        //console.log(endgame);
-
-      }else if( (arr[0]=='O' && arr[1]=='O' && arr[2] =='O') || (arr[3]=='O' && arr[4]=='O' && arr[5] =='O') || (arr[6]=='O' && arr[7]=='O' && arr[8] =='O') ||(arr[0]=='O' && arr[4]=='O' && arr[8] =='O') || (arr[2]=='O' && arr[4]=='O' && arr[6] =='O') || (arr[0]=='O' && arr[3]=='O' && arr[6] =='O') || (arr[4]=='O' && arr[1]=='O' && arr[7] =='O')|| (arr[8]=='O' && arr[5]=='O' && arr[2] =='O') ){
-       
-        document.getElementById('result').innerHTML= "Player 'O' won";
-        B = true;
-        endgame = false;
-       // console.log(endgame);
-      }else;
-
+  if (count >= 5) {
+    if (count == 9) {
+      message.innerText = "No one won";
+      gameOver = true;
     }
-    if( count==9 && !B){
-      document.getElementById('result').innerHTML= "No one won";
-    // console.log(arr);
+    if (
+        (contentArr[0] == "X" && contentArr[1] == "X" && contentArr[2] == "X") ||
+        (contentArr[3] == "X" && contentArr[4] == "X" && contentArr[5] == "X") ||
+        (contentArr[6] == "X" && contentArr[7] == "X" && contentArr[8] == "X") ||
+        (contentArr[0] == "X" && contentArr[4] == "X" && contentArr[8] == "X") ||
+        (contentArr[2] == "X" && contentArr[4] == "X" && contentArr[6] == "X") ||
+        (contentArr[0] == "X" && contentArr[3] == "X" && contentArr[6] == "X") ||
+        (contentArr[4] == "X" && contentArr[1] == "X" && contentArr[7] == "X") ||
+        (contentArr[8] == "X" && contentArr[5] == "X" && contentArr[2] == "X")
+        ) {
+            message.innerText = "Player 'X' won";
+            gameOver = true;
+        } else if (
+            (contentArr[0] == "O" && contentArr[1] == "O" && contentArr[2] == "O") ||
+            (contentArr[3] == "O" && contentArr[4] == "O" && contentArr[5] == "O") ||
+            (contentArr[6] == "O" && contentArr[7] == "O" && contentArr[8] == "O") ||
+            (contentArr[0] == "O" && contentArr[4] == "O" && contentArr[8] == "O") ||
+            (contentArr[2] == "O" && contentArr[4] == "O" && contentArr[6] == "O") ||
+            (contentArr[0] == "O" && contentArr[3] == "O" && contentArr[6] == "O") ||
+            (contentArr[4] == "O" && contentArr[1] == "O" && contentArr[7] == "O") ||
+            (contentArr[8] == "O" && contentArr[5] == "O" && contentArr[2] == "O")
+            ) {
+                message.innerText = "Player 'O' won";
+                gameOver = true;
     }
-
-
-  });
-
-resetButton.addEventListener('click',function(){
-  endgame = true;
-  B = false;
-  count = 0;
-  arr1.forEach(e => {
-
-    document.getElementById(e).innerHTML='';
-    arr[  parseInt(e) -1 ] = '';
-
-  });
-
-
- // console.log(arr);
-  if(entryElement=='O')
-  document.getElementById('result').innerHTML= "Player 'X' turn";
-  else
-  document.getElementById('result').innerHTML= "Player 'O' turn";
-
+  }
 });
+
+button.addEventListener("click", function () {
+  for (var i = 1; i <= 9; i++) {
+    document.getElementById(i).innerText = "";
+  }
+  count = 0;
+  gameOver = false;
+});
+
